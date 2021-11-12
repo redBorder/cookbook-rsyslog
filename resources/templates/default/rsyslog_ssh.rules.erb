@@ -1,0 +1,20 @@
+#Este fichero contiene las reglas de parseo para liblognorm,
+#que se aplicarán a los logs de la aplicación ssh. Se contemplan 
+#los logs que aparecen con más frecuencia.
+
+prefix=
+
+rule=:%auth:word% %auth-method:word% for %username:word% from %src-ip:ipv4% port %src-port:number% %protocol:word%
+rule=:%auth:word% %auth-method:word% for invalid user %username:word% from %src-ip:ipv4% port %src-port:number% %protocol:word%
+rule=:message repeated %-:number% times: [ %auth:word% %auth-method:word% for %username:word% from %src-ip:ipv4% port %src-port:number% %protocol:char-to:\x5d%\x5d
+rule=:pam_unix(sshd:session): session %session-status:word% for user %username:word% by (uid=%uid:number%)
+rule=:pam_unix(sshd:session): session %session-status:word% for user %username:word%
+rule=:pam_unix(sshd:auth): %auth-method:word% %auth:char-to:\x3b%\x3b logname= uid=%uid:number% euid=%euid:number% tty=%tty:word% ruser= rhost=%src-ip:ipv4%%-:whitespace%user=%username:word%
+rule=:pam_unix(sshd:auth): %auth-method:word% %auth:char-to:\x3b%\x3b logname= uid=%uid:number% euid=%euid:number% tty=%tty:word% ruser= rhost=%src-ip:ipv4%
+rule=:pam_unix(sshd:auth): check pass; user %username:word%
+rule=:Invalid user %username:word% from %src-ip:ipv4%
+rule=:input_userauth_request: invalid user %username:word% [preauth]
+rule=:Received disconnect from %src-ip:ipv4%: %-:number%: %session-status:word% by user
+rule=:Received signal %-:number%; %session-status:char-to:\x2e%\x2e
+rule=:PAM %-:number% more %auth-method:word% %auth:char-to:\x3b%\x3b logname= uid=%uid:number% euid=%euid:number% tty=%tty:word% ruser= rhost=%src-ip:ipv4%%-:whitespace%user=%username:word%
+rule=:Connection %session-status:word% by %src-ip:ipv4% [preauth]

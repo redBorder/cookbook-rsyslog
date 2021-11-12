@@ -1,0 +1,30 @@
+#process: proceso que generó en log
+#MNEMONIC: Identificador único del mensaje. Identifica el mensaje entre todos los mensajes de los dispositivos Cisco.
+#file: archivo donde se genera el mensaje.
+#line: línea del fichero anterior donde se genera el mensaje.
+
+prefix= *%process:char-to:\x3a%\x3a %-:date-rfc3164%.%-:number%\x3a #%MNEMONIC:char-to:\x3a%\x3a %file:char-to:\x3a%\x3a%line:number% 
+
+#action: acción realizada con la entrada
+#station_ip: ip asociada a la estación relacionada con la entrada alterada.
+#station_mac: dirección MAC asociada a la estación relacionada con la entrada alterada.
+#V: ¿vlan?
+#I: ¿Ap?
+#P: ¿Port?
+
+#Ejemplo: *sisfSwitcherTask: May 03 10:48:16.083: #SISF-6-ENTRY_CREATED: sisf_shim_utils.c:486 Entry created A=fe80::820:d412:94de:840 V=30 I=wireless:0 P=0005 M=90:60:f1:d4:c4:cb
+
+rule=:Entry %action:word% A=%station_ip:ipv6% V=%V:number% I=%I:word% P=%P:word% M=%station_mac:mac48%
+
+#Ejemplo: *osapiBsnTimer: May 03 10:32:40.462: #SISF-6-ENTRY_DELETED: sisf_shim_utils.c:483 Entry deleted A=fe80::ae72:89ff:fecf:3cee V=50 I=wireless:0 P=0005 M=ac:72:89:cf:3c:ee
+
+rule=:Entry %action:word% A=%station_ip:ipv6% V=%V:number% I=%I:word% P=%P:word% M=
+
+#Ejemplo: *SISF BT Process: May 03 10:21:31.829: #LOG-6-Q_IND: sisf_shim_utils.c:489 Entry changed A=fe80::7952:f9fc:38b2:5693 V=30 I=wireless:0 P=0000 M=[...It occurred %-:number% times.!]
+
+rule=:Entry %action:word% A=%station_ip:ipv6% V=%V:number% I=%I:word% P=%P:word% M=%-:rest%
+
+#Reglas anteriores repetidas para ipv4
+rule=:Entry %action:word% A=%station_ip:ipv4% V=%V:number% I=%I:word% P=%P:word% M=%station_mac:mac48%
+rule=:Entry %action:word% A=%station_ip:ipv4% V=%V:number% I=%I:word% P=%P:word% M=
+rule=:Entry %action:word% A=%station_ip:ipv4% V=%V:number% I=%I:word% P=%P:word% M=%-:rest%

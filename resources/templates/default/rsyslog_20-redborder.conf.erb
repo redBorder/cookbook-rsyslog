@@ -1,0 +1,113 @@
+# redborder manager configurations for rsyslog
+
+$SystemLogRateLimitBurst 1000  # rate-limiting burst set to 500 messages
+
+$LocalHostName <%= node["hostname"] %>
+$PreserveFQDN on
+
+<% if node["redborder"]["rsyslog"]["is_server"] -%>
+$template DailyPerHostLogs,"/var/log/remote/%HOSTNAME%-%FROMHOST-IP%.log"
+<% end -%>
+
+#### RULES ####
+# rsyslog V7 compatibility notes: http://www.rsyslog.com/doc/v8-stable/compatibility/v7compatibility.html
+#
+<% if node["redborder"]["rsyslog"]["savelocally"] -%>
+<% if node["redborder"]["rsyslog"]["is_server"] -%>
+if $source == '<%= node["hostname"] %>' and $syslogseverity <= '6' and ( $syslogfacility-text != 'mail' and $syslogfacility-text != 'authpriv' and $syslogfacility-text != 'cron' ) then   /var/log/messages;RSYSLOG_TraditionalFileFormat
+if $source == '<%= node["hostname"] %>' and $syslogfacility-text == 'authpriv' then    /var/log/secure;RSYSLOG_TraditionalFileFormat
+if $source == '<%= node["hostname"] %>' and $syslogfacility-text == 'mail'     then    /var/log/maillog;RSYSLOG_TraditionalFileFormat
+if $source == '<%= node["hostname"] %>' and $syslogfacility-text == 'cron'     then    /var/log/cron;RSYSLOG_TraditionalFileFormat
+if $source == '<%= node["hostname"] %>' and $syslogseverity-text == 'emerg'    then    :omusrmsg:*
+if $source == '<%= node["hostname"] %>' and $syslogfacility-text == 'local7'   then    /var/log/boot.log;RSYSLOG_TraditionalFileFormat
+<% else -%>
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+authpriv.*                                              /var/log/secure
+mail.*                                                  -/var/log/maillog
+cron.*                                                  /var/log/cron
+*.emerg                                                 *
+uucp,news.crit                                          /var/log/spooler
+local7.*                                                /var/log/boot.log
+<% end -%>
+<% end -%>
+<% if node["redborder"]["rsyslog"]["is_server"] -%>
+$umask 0000
+$DirCreateMode 0755
+$FileCreateMode 0644
+#*.* -?DailyPerHostLogs;RSYSLOG_TraditionalFileFormat
+<% end -%>
+
+#### FORWADING RULES ####
+$WorkDirectory /var/spppl/rsyslog     # where to place spool files
+$ActionQueueFileName fwdRule1         # unique name prefix for spool files
+$ActionQueueMaxDiskSpace 250m         # 250m space limit (use as much as possible)
+$ActionQueueSaveOnShutdown on         # save messages to disk on shutdown
+$ActionQueueType LinkedList           # run asynchronously
+$ActionResumeRetryCount -1            # infinite retries if host is down
+
+#### rsyslog servers configured from redborder interface ####
+
+<%if @ips -%>
+*.*  @<%=node["redborder"]["cdomain"]%>:514
+<%else %>
+<% if !node["redborder"].nil? and !node["redborder"]["rsyslog"].nil? and !node["redborder"]["rsyslog"]["servers"].nil? -%>
+<% if node["redborder"]["rsyslog"]["servers"].is_a? String %>
+<%   syslogserv=[node["redborder"]["rsyslog"]["servers"]] %>
+<% else %>
+<%   syslogserv=node["redborder"]["rsyslog"]["servers"] %>
+<% end %>
+<% syslogserv.each do |server| -%>
+<% if server!="" %>
+<% if node["redborder"]["rsyslog"]["protocol"] != "tcp" -%>
+<% if server.include?(":") -%>
+if $fromhost-ip == '127.0.0.1' then
+{
+  *.*   @<%=server%>
+}
+<% @ips_nodes.each do |ips_node| %>
+if $fromhost-ip == '<%=ips_node["ipaddress"]%>' then
+{
+  *.*   @<%=server%>  
+}
+<% end -%>
+<% else -%>
+if $fromhost-ip == '127.0.0.1' then
+{
+  *.*   @<%=server%>:514
+}
+<% @ips_nodes.each do |ips_node| %>
+if $fromhost-ip == '<%=ips_node["ipaddress"]%>' then
+{
+  *.*   @<%=server%>:514
+}
+<% end -%>
+<% end -%>
+<% else -%>
+<% if server.include?(":") -%>
+if $fromhost-ip == '127.0.0.1' then
+{
+  *.*   @@<%=server%>
+}
+<% @ips_nodes.each do |ips_node| %>
+if $fromhost-ip == '<%=ips_node["ipaddress"]%>' then
+{
+  *.*   @<%=server%>  
+}
+<% end -%>
+<% else -%>
+if $fromhost-ip == '127.0.0.1' then
+{
+  *.*   @@<%=server%>:514
+}
+<% @ips_nodes.each do |ips_node| %>
+if $fromhost-ip == '<%=ips_node["ipaddress"]%>' then
+{
+  *.*   @<%=server%>:514
+}
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>

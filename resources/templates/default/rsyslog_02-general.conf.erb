@@ -1,0 +1,14 @@
+#Load necesary modules
+module(load="omkafka")
+module(load="mmjsonparse")
+module(load="mmpstrucdata")
+module(load="mmnormalize")
+<% if node["redborder"]["rsyslog"]["enable_hash"] %>
+module(load="mmrfc5424addhmac")
+<% end %>
+
+#Common actions
+<% if node["redborder"]["rsyslog"]["enable_hash"] %>
+action(type="mmrfc5424addhmac" key="<%= node["redborder"]["rsyslog"]["hash_key"] %>" hashFunction="<%= node["redborder"]["rsyslog"]["hash_function"] %>" sd_id="hash@39483")
+<% end %>
+action(type="mmpstrucdata")

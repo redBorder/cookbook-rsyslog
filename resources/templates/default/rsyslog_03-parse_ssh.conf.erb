@@ -1,0 +1,51 @@
+# Este fichero de configuración se encarga de obtener los logs
+# del servicio ssh y extraer la información mediante el uso de
+# reglas(liblognorm).
+# Posteriormente se realiza el envio de dicha información al sistema
+# Apache Kafka y se realiza una copia en un fichero local.
+
+####Plantilla para los logs del servicio ssh####
+template(name="norm_ssh"
+       type="list"){
+            constant(value="{")
+             constant(value="\"raw-message\":\"")           property(name="rawmsg" format="json")
+             constant(value="\",\"message\":\"")               property(name="msg" format="json")
+
+             constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
+             constant(value="\",\"pri-text\":\"")               property(name="pri-text" format="json")
+             constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
+             constant(value="\",\"syslogfacility-text\":\"")    property(name="syslogfacility-text" format="json")
+             constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
+             constant(value="\",\"syslogseverity-text\":\"")    property(name="syslogseverity-text" format="json")
+
+             constant(value="\",\"protocol-version\":\"")       property(name="protocol-version" format="json")
+             constant(value="\",\"timestamp\":\"")              property(name="timestamp" dateFormat="unixtimestamp")
+             constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
+             constant(value="\",\"fromhost-ip\":\"")            property(name="fromhost-ip" format="json")
+             constant(value="\",\"app-name\":\"")               property(name="app-name" format="json")
+             constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
+             constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
+             constant(value="\",\"input-module\":\"")           property(name="inputname" format="json")
+             constant(value="\",\"parsed-info\":")             property(name="$!")
+             constant(value="}")
+
+      }
+
+
+if $app-name == 'sshd' <% if node["redborder"]["rsyslog"]["enable_client_proxy_logs"] %> and $fromhost-ip != '127.0.0.1' <% end %> then
+{
+#Extracción campos mediante reglas, usando el modulo liblognorm
+	action(type="mmnormalize" ruleBase="<%= node["redborder"]["rsyslog"]["rules_dir"] %>/ssh.rules")
+
+#Copia local en un fichero.
+&	action(	type="omfile"
+			file="<%= node["redborder"]["rsyslog"]["remote_logs_dir"] %>/norm_ssh.log"
+			template="norm_ssh"
+			)
+
+#Acción para enviar los logs a Apache Kafka
+&   action(type="omkafka" topic="rb_vault" broker="localhost:9092"
+            template="norm_ssh"
+                       )
+	stop
+}

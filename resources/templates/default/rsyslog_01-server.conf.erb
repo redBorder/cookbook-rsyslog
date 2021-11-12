@@ -1,0 +1,27 @@
+<% if node["redborder"]["rsyslog"]["enable_tcp"] %>
+#TCP configuration
+$ModLoad imtcp
+
+<% if node["redborder"]["rsyslog"]["enable_tls"] %>
+$DefaultNetstreamDriver gtls
+
+$DefaultNetstreamDriverCAFile <%= node["redborder"]["rsyslog"]["certificates_dir"] %>/ca.pem
+$DefaultNetstreamDriverCertFile <%= node["redborder"]["rsyslog"]["certificates_dir"] %>/cert.pem
+$DefaultNetstreamDriverKeyFile <%= node["redborder"]["rsyslog"]["certificates_dir"] %>/key.pem
+
+$InputTCPServerStreamDriverMode 1
+$InputTCPServerStreamDriverAuthMode x509/name
+<% node["redborder"]["rsyslog"]["permitted_peers_array"].each do |peer| %>
+$InputTCPServerStreamDriverPermittedPeer <%= peer %>
+<% end %>
+<% end %>
+
+$InputTCPServerRun <%= node["redborder"]["rsyslog"]["tcp_port"] %>
+<% end %>
+
+<% if node["redborder"]["rsyslog"]["enable_udp"] %>
+#UDP configuration
+module(load="imudp")
+input(type="imudp" port="<%= node["redborder"]["rsyslog"]["udp_port"] %>")
+$UDPServerAddress 0.0.0.0
+<% end %>

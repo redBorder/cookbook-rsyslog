@@ -1,0 +1,67 @@
+#This configuration file collects Apache web server logs and sends them to Kafka.
+
+
+#Loads required modules
+#module(load="omkafka")
+#module(load="mmjsonparse")
+
+
+####Template for Apache's logs with JSON format####
+#template(name="norm_apache" type="list"){
+#	property(name="$!all-json")
+#  	constant(value="\n")
+#}
+template(name="norm_apacheaccess"
+         type="list"){
+            constant(value="{")
+             constant(value="\"raw-message\":\"")               property(name="rawmsg" format="json")
+             constant(value="\",\"message\":\"")                property(name="msg" format="json")
+             constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
+             constant(value="\",\"pri-text\":\"")               property(name="pri-text" format="json")
+             constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
+             constant(value="\",\"syslogfacility-text\":\"")    property(name="syslogfacility-text" format="json")
+             constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
+             constant(value="\",\"syslogseverity-text\":\"")    property(name="syslogseverity-text" format="json")
+             constant(value="\",\"protocol-version\":\"")       property(name="protocol-version" format="json")
+             constant(value="\",\"timestamp\":\"")              property(name="timestamp" dateFormat="unixtimestamp")
+             constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
+             constant(value="\",\"fromhost-ip\":\"")            property(name="fromhost-ip" format="json")
+             constant(value="\",\"app-name\":\"")               property(name="app-name" format="json")
+             constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
+             constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
+             constant(value="\",\"structured-data\":\"")        property(name="structured-data" format="json")
+             constant(value="\",\"tag\":\"")                    property(name="$!rfc5424-sd!rbvault@39483!tag" format="json")
+             constant(value="\",\"sensor-uuid\":\"")            property(name="$!rfc5424-sd!rbvault@39483!sensor-uuid" format="json")
+             constant(value="\",\"hash\":\"")                   property(name="$!rfc5424-sd!hash@39483!hash" format="json")
+             constant(value="\",\"inputname\":\"")              property(name="inputname" format="json")
+             constant(value="\",\"access-time\":\"")            property(name="$!time" format="json")
+             constant(value="\",\"remoteIP\":\"")               property(name="$!remoteIP" format="json")
+             constant(value="\",\"host\":\"")                   property(name="$!host" format="json")
+             constant(value="\",\"request\":\"")                property(name="$!request" format="json")
+             constant(value="\",\"query\":\"")                  property(name="$!query" format="json")
+             constant(value="\",\"method\":\"")                 property(name="$!method" format="json")
+             constant(value="\",\"status\":\"")                 property(name="$!status" format="json")
+             constant(value="\",\"userAgent\":\"")              property(name="$!userAgent" format="json")
+             constant(value="\",\"referer\":\"")                property(name="$!referer" format="json")
+             constant(value="\",\"X-Forwarded-For\":\"")        property(name="$!X-Forwarded-For" format="json")
+           constant(value="\"}")
+
+        }
+
+if $app-name == 'apache.access' <% if node["redborder"]["rsyslog"]["enable_client_proxy_logs"] %> and $fromhost-ip != '127.0.0.1' <% end %> then{
+
+	#mmjsonparse is used to obtain JSON formatted fields.
+	action(type="mmjsonparse")
+
+	#Local copy in a file
+&  	action( type="omfile"
+            file="<%= node["redborder"]["rsyslog"]["remote_logs_dir"] %>/norm_apacheaccess.log"
+            template="norm_apacheaccess"
+            )
+
+	#Action to send logs to Apache Kafka
+&  	action(type="omkafka" topic="rb_vault" broker="kafka.service"
+            template="norm_apacheaccess"
+           )
+    stop
+}
