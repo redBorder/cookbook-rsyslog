@@ -1,4 +1,4 @@
-PACKAGE_NAME?=	cookbook-memcached
+PACKAGE_NAME?=	cookbook-rsyslog
 
 VERSION?=	$(shell git describe --abbrev=6 --tags HEAD --always | sed 's/-/_/g')
 
