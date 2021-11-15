@@ -45,5 +45,8 @@ esac
 %doc
 
 %changelog
+* Mon Nov 15 2021 Jordi Hernandez <jhernandez@redborder.com> - 1.0.1
+- Corrected source cookbook template
+
 * Fri Nov 12 2021 Javier Rodríguez <javiercrg@redborder.com> - 1.0.0-1
 - first spec version
