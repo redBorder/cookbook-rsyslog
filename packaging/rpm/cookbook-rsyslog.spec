@@ -11,6 +11,8 @@ License: AGPL 3.0
 URL: https://github.com/redborder/cookbook-rsyslog
 Source0: %{name}-%{version}.tar.gz
 
+requires: unzip
+
 %description
 %{summary}
 
@@ -41,26 +43,23 @@ case "$1" in
     su - -s /bin/bash -c 'source /etc/profile && rvm gemset use default && env knife cookbook upload rsyslog'
   ;;
 esac
+
 # Copy libraries to user
-cp -f %{buildroot}/var/chef/cookbooks/rsyslog/files/default/libraries.zip /usr/lib64/rsyslog/
+cp -f /var/chef/cookbooks/rsyslog/files/default/* /usr/lib64/rsyslog/
+cd /usr/lib64/rsyslog/
+unzip -f -j -o /usr/lib64/rsyslog/libraries.zip
 
-
+#Cleaning temporally file
+rm -f /usr/lib64/rsyslog/libraries.zip
 
 %files
 %defattr(0755,root,root)
 %{rsys_lib}
 %defattr(0755,root,root)
 /var/chef/cookbooks/rsyslog
-#%defattr(0644,root,root)
-#/var/chef/cookbooks/rsyslog/README.md
-#%defattr(0755,root,root)
-#%{rsys_lib}/mmjsonparse.so
-#%defattr(0755,root,root)
-#%{rsys_lib}/mmnormalize.so
-#%defattr(0755,root,root)
-#%{rsys_lib}/mmpstrucdata.so
-#%defattr(0755,root,root)
-#%{rsys_lib}/mmrfc5424addhmac.so
+%defattr(0644,root,root)
+/var/chef/cookbooks/rsyslog/README.md
+
 
 %doc
 
