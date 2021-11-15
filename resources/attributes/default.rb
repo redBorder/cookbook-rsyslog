@@ -1,3 +1,4 @@
+default["rsyslog"]["registered"] = false
 default["redborder"]["rsyslog"]["enable_tcp"] = true
 default["redborder"]["rsyslog"]["enable_tls"] = false
 default["redborder"]["rsyslog"]["enable_udp"] = true

@@ -2,7 +2,7 @@
 # Resource:: configure
 #
 
-actions :add, :register, :deregister
+actions :add, :register, :deregister, :remove
 default_action :add
 
 attribute :enable_tls, :kind_of => [TrueClass, FalseClass], :default => true

@@ -4,7 +4,6 @@
 
 include Rsyslog::Helper
 
-
 action :add do
   begin
     enable_tls = new_resource.enable_tls
@@ -162,15 +161,45 @@ action :add do
     end
 
     service "rsyslog" do
-      provider Chef::Provider::Service::Init::Redhat
-      supports :status => true, :start => true, :restart => true
+      # provider Chef::Provider::Service::Init::Redhat
+      service_name "rsyslog"
+      supports :status => true, :start => true, :restart => true, :enable => true
       ignore_failure true
-      action([:start, :enable])
+      action [:enable, :start]
     end
 
     Chef::Log.info("rsyslog has been configured correctly.")
 
   rescue Exception => e
+    Chef::Log.error(e.message)
+  end
+end
+
+action :remove do #Usually used to uninstall something
+  begin
+    config_dir = new_resource.config_dir
+
+    service "rsyslog" do
+      supports :stop => true, :disable => true
+      action [:stop, :disable]
+    end
+    # Delete rsyslog config file
+    # template "#{config_dir}/rsyslog" do
+    #   action :delete
+    #   backup false
+    # end
+
+    # Uninstall rsyslog service.
+    # package 'Uninstall iptables' do
+    #   case node[:platform]
+    #   when 'centos'
+    #     package_name 'rsyslog'
+    #   end
+    #   action :remove
+    # end
+
+    Chef::Log.info("Rsyslog cookbook has been processed")
+  rescue => e
     Chef::Log.error(e.message)
   end
 end

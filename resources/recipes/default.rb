@@ -5,8 +5,7 @@
 # Copyright 2016, redborder
 #
 # All rights reserved - Do Not Redistribute
-#
-rsyslog_configure "config" do
+rsyslog_config "add" do
   enable_tls node["redborder"]["rsyslog"]["enable_tls"]
   config_dir node["redborder"]["rsyslog"]["config_dir"]
   certificates_dir node["redborder"]["rsyslog"]["certificates_dir"]
