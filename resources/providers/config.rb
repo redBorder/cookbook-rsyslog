@@ -97,6 +97,7 @@ action :add do
     if node[:redborder][:rsyslog][:is_server] #CHECK IF NEEDED
       template '/etc/logrotate.d/log-sensors' do
         source 'rsyslog_log-sensors.erb'
+        cookbook "rsyslog"
         owner 'root'
         group 'root'
         mode 0644
@@ -106,6 +107,7 @@ action :add do
 
     template '/etc/rsyslog.conf' do
       source  'rsyslog.conf.erb'
+      cookbook "rsyslog"
       owner 'root'
       group   'root'
       mode  '0644'
@@ -115,6 +117,7 @@ action :add do
 
     template '/etc/sysconfig/rsyslog' do
       source 'rsyslog_sysconfig.erb'
+      cookbook "rsyslog"
       owner 'root'
       group 'root'
       mode 0644
@@ -124,6 +127,7 @@ action :add do
 
     template "#{config_dir}/01-server.conf" do
       source  'rsyslog_01-server.conf.erb'
+      cookbook "rsyslog"
       owner 'root'
       group   'root'
       mode  '0644'
@@ -133,6 +137,7 @@ action :add do
 
     template "#{config_dir}/02-general.conf" do
       source  'rsyslog_02-general.conf.erb'
+      cookbook "rsyslog"
       owner 'root'
       group   'root'
       mode  '0644'
@@ -142,6 +147,7 @@ action :add do
 
     template "#{config_dir}/99-parse_rfc5424.conf" do
       source  'rsyslog_99-parse_rfc5424.conf.erb'
+      cookbook "rsyslog"
       owner 'root'
       group   'root'
       mode  '0644'
@@ -152,6 +158,7 @@ action :add do
 
     template "#{config_dir}/20-redborder.conf" do
       source  'rsyslog_20-redborder.conf.erb'
+      cookbook "rsyslog"
       owner 'root'
       group   'root'
       mode  '0644'
