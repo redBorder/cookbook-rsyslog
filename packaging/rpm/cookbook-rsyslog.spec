@@ -1,4 +1,5 @@
 %global rsys_lib /usr/lib64/rsyslog
+%define _binaries_in_noarch_packages_terminate_build 0
 
 Name: cookbook-rsyslog
 Version: %{__version}
@@ -20,11 +21,12 @@ Source0: %{name}-%{version}.tar.gz
 
 %install
 mkdir -p %{buildroot}/var/chef/cookbooks/rsyslog
-mkdir -p %{buildroot}/usr/lib64/rsyslog/
+mkdir -p %{buildroot}/usr/lib64/rsyslog
 
 cp -f -r  resources/* %{buildroot}/var/chef/cookbooks/rsyslog/
 chmod -R 0755 %{buildroot}/var/chef/cookbooks/rsyslog
 install -D -m 0644 README.md %{buildroot}/var/chef/cookbooks/rsyslog/README.md
+
 
 %pre
 
@@ -39,21 +41,26 @@ case "$1" in
     su - -s /bin/bash -c 'source /etc/profile && rvm gemset use default && env knife cookbook upload rsyslog'
   ;;
 esac
+# Copy libraries to user
+cp -f %{buildroot}/var/chef/cookbooks/rsyslog/files/default/libraries.zip /usr/lib64/rsyslog/
+
+
 
 %files
+%defattr(0755,root,root)
 %{rsys_lib}
 %defattr(0755,root,root)
 /var/chef/cookbooks/rsyslog
-%defattr(0644,root,root)
-/var/chef/cookbooks/rsyslog/README.md
+#%defattr(0644,root,root)
+#/var/chef/cookbooks/rsyslog/README.md
 #%defattr(0755,root,root)
-#/usr/lib64/rsyslog/mmjsonparse.so
+#%{rsys_lib}/mmjsonparse.so
 #%defattr(0755,root,root)
-#/usr/lib64/rsyslog/mmnormalize.so
+#%{rsys_lib}/mmnormalize.so
 #%defattr(0755,root,root)
-#/usr/lib64/rsyslog/mmpstrucdata.so
+#%{rsys_lib}/mmpstrucdata.so
 #%defattr(0755,root,root)
-#/usr/lib64/rsyslog/mmrfc5424addhmac.so
+#%{rsys_lib}/mmrfc5424addhmac.so
 
 %doc
 
