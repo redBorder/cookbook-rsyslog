@@ -29,6 +29,10 @@ action :add do
       case node[:platform]
       when 'centos'
         package_name 'rsyslog'
+        package_name 'rsyslog-kafka'
+        package_name 'rsyslog-mmnormalize'
+        package_name 'rsyslog-relp'
+        package_name 'rsyslog-mmjsonparse'
       else
         package_name 'rsyslog'
       end
