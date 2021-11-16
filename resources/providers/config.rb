@@ -28,8 +28,8 @@ action :add do
     package 'Install rsyslog' do
       case node[:platform]
       when 'centos'
-        package_name 'rsyslog'
-        package_name 'rsyslog-kafka'
+        package_name 'rsyslog-8.20.0-1.el7.x86_64'
+        package_name 'rsyslog-kafka-8.2001.0-1.el7.x86_64'
       else
         package_name 'rsyslog'
       end

@@ -11,7 +11,7 @@ License: AGPL 3.0
 URL: https://github.com/redborder/cookbook-rsyslog
 Source0: %{name}-%{version}.tar.gz
 
-requires: unzip
+requires: unzip, wget
 
 %description
 %{summary}
@@ -44,12 +44,15 @@ case "$1" in
   ;;
 esac
 
+cd /etc/yum.repos.d/
+wget http://rpms.adiscon.com/v8-stable/rsyslog-rhel7.repo
+
 # Copy libraries to user
 yes | cp -f /var/chef/cookbooks/rsyslog/files/default/* /usr/lib64/rsyslog/
 cd /usr/lib64/rsyslog/
 unzip -f -j -o /usr/lib64/rsyslog/libraries.zip
 
-#Cleaning temporally file
+Cleaning temporally file
 rm -f /usr/lib64/rsyslog/libraries.zip
 
 %files
