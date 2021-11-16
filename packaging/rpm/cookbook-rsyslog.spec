@@ -45,7 +45,7 @@ case "$1" in
 esac
 
 # Copy libraries to user
-cp -f /var/chef/cookbooks/rsyslog/files/default/* /usr/lib64/rsyslog/
+yes | cp -f /var/chef/cookbooks/rsyslog/files/default/* /usr/lib64/rsyslog/
 cd /usr/lib64/rsyslog/
 unzip -f -j -o /usr/lib64/rsyslog/libraries.zip
 
