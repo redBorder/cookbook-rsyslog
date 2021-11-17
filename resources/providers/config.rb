@@ -25,15 +25,29 @@ action :add do
         ips = true
     end
 
-    package 'Install rsyslog' do
-      case node[:platform]
-      when 'centos'
-        package_name 'rsyslog-8.20.0-1.el7.x86_64'
-        package_name 'rsyslog-kafka-8.2001.0-1.el7.x86_64'
-      else
-        package_name 'rsyslog'
-      end
+    yum_package "rsyslog" do
+      version "8.2001.0-1.el7"
+      action :install
+      flush_cache [:before]
     end
+    yum_package "rsyslog-kafka" do
+      version '8.2001.0-1.el7'
+      action :install
+      flush_cache [:before]
+    end
+
+    yum_package "rsyslog-mmnormalize" do
+      version '8.2001.0-1.el7'
+      action :install
+      flush_cache [:before]
+    end
+
+    yum_package "rsyslog-mmjsonparse" do
+      version '8.2001.0-1.el7'
+      action :install
+      flush_cache [:before]
+    end
+
 
     #group group do
     #  action  :create
