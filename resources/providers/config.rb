@@ -14,6 +14,7 @@ action :add do
     work_dir = new_resource.work_dir
     user = new_resource.user
     group = new_resource.group
+    kafka_server = new_resource.kafka_server
     cdomain = node["redborder"]["cdomain"]
 
     # Get vault and cep nodes
@@ -168,7 +169,7 @@ action :add do
       mode  '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
-      variables(:cdomain => cdomain, :vault_nodes => vault_nodes, :ips => ips)
+      variables(:cdomain => cdomain, :kafka_server => kafka_server, :vault_nodes => vault_nodes, :ips => ips)
     end
 
     template "#{config_dir}/20-redborder.conf" do

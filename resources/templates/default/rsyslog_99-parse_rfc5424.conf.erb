@@ -2,58 +2,56 @@
 #Template for RFC5424 formatted logs
 
 <% @vault_nodes.each_with_index do |vault_node, i| %>
-<% template_name = vault_node["rbname"].gsub(' ','___') %>
-<% if !vault_node["redborder"]["sensor_uuid"].nil? and vault_node["redborder"]["sensor_uuid"]!="" %>
-<% template_name = vault_node["rbname"].gsub(' ','___') + "_" + vault_node["redborder"]["sensor_uuid"] %>
-<% else %>
-  template_name = vault_node["rbname"].gsub(' ','___')
-<% end %>
-template(name="<%= template_name %>" type="list"){
-           constant(value="{")
-             constant(value="\"raw_message\":\"")               property(name="rawmsg" format="json")
-             constant(value="\",\"message\":\"")                property(name="msg" format="json")
-
-             constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
-             constant(value="\",\"pri_text\":\"")               property(name="pri-text" format="json")
-             constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
-             constant(value="\",\"syslogfacility_text\":\"")    property(name="syslogfacility-text" format="json")
-             constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
-             constant(value="\",\"syslogseverity_text\":\"")    property(name="syslogseverity-text" format="json")
-
-             constant(value="\",\"protocol_version\":\"")       property(name="protocol-version" format="json")
-             constant(value="\",\"timestamp\":\"")              property(name="timegenerated" dateFormat="unixtimestamp")
-             constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
-             constant(value="\",\"fromhost_ip\":\"")            property(name="fromhost-ip" format="json")
-             constant(value="\",\"app_name\":\"")               property(name="app-name" format="json")
-             constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
-             constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
-
-             constant(value="\",\"structured_data\":\"")        property(name="structured-data" format="json")
-             constant(value="\",\"tag\":\"")                    property(name="$!rfc5424-sd!rbvault@39483!tag" format="json")
-             constant(value="\",\"hash\":\"")                   property(name="$!rfc5424-sd!hash@39483!hash" format="json")
-             constant(value="\",\"inputname\":\"")              property(name="inputname" format="json")
-
-             constant(value="\",\"sensor_ip\":\"")              constant(value="<%= vault_node["redborder"]["ipaddress"] %>")
-             constant(value="\",\"sensor_name\":\"")            constant(value="<%= vault_node["rbname"] %>")
-             <% ["sensor_uuid", "deployment", "deployment_uuid", "namespace", "namespace_uuid", "market", "market_uuid", "organization", "organization_uuid", "service_provider", "service_provider_uuid", "campus", "campus_uuid", "building", "building_uuid", "floor", "floor_uuid" ].each do |ss| %>
-               <% if !vault_node["redborder"][ss].nil? and vault_node["redborder"][ss]!="" %>
-             constant(value="\",\"<%= ss %>\":\"")             constant(value="<%= vault_node["redborder"][ss] %>")
-               <% end %>
-             <% end %>
-           constant(value="\"}")
-        }
-
-  <% if vault_node["rbname"] == "CEP" %>
-if $fromhost-ip == '127.0.0.1' and $app-name == 'cep' and $rawmsg contains "ALERT" and $rawmsg contains "RULE" then
-  <% else %>
-if $fromhost-ip == '<%= vault_node["redborder"]["ipaddress"] %>' then
+  <% template_name = vault_node["rbname"].gsub(' ','___') %>
+  <% if !vault_node["redborder"]["sensor_uuid"].nil? and vault_node["redborder"]["sensor_uuid"]!="" %>
+    <% template_name = vault_node["rbname"].gsub(' ','___') + "_" + vault_node["redborder"]["sensor_uuid"] %>
   <% end %>
-{
-  #Action to send logs to Apache Kafka
-  action(type="omkafka" topic="rb_vault" broker="kafka.<%= @cdomain %>:9092" template="<%= template_name %>")
-  stop
-}
+  template(name="<%= template_name %>" type="list"){
+             constant(value="{")
+               constant(value="\"raw_message\":\"")               property(name="rawmsg" format="json")
+               constant(value="\",\"message\":\"")                property(name="msg" format="json")
 
-<% end %>
+               constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
+               constant(value="\",\"pri_text\":\"")               property(name="pri-text" format="json")
+               constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
+               constant(value="\",\"syslogfacility_text\":\"")    property(name="syslogfacility-text" format="json")
+               constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
+               constant(value="\",\"syslogseverity_text\":\"")    property(name="syslogseverity-text" format="json")
+
+               constant(value="\",\"protocol_version\":\"")       property(name="protocol-version" format="json")
+               constant(value="\",\"timestamp\":\"")              property(name="timegenerated" dateFormat="unixtimestamp")
+               constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
+               constant(value="\",\"fromhost_ip\":\"")            property(name="fromhost-ip" format="json")
+               constant(value="\",\"app_name\":\"")               property(name="app-name" format="json")
+               constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
+               constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
+
+               constant(value="\",\"structured_data\":\"")        property(name="structured-data" format="json")
+               constant(value="\",\"tag\":\"")                    property(name="$!rfc5424-sd!rbvault@39483!tag" format="json")
+               constant(value="\",\"hash\":\"")                   property(name="$!rfc5424-sd!hash@39483!hash" format="json")
+               constant(value="\",\"inputname\":\"")              property(name="inputname" format="json")
+
+               constant(value="\",\"sensor_ip\":\"")              constant(value="<%= vault_node["redborder"]["ipaddress"] %>")
+               constant(value="\",\"sensor_name\":\"")            constant(value="<%= vault_node["rbname"] %>")
+               <% ["sensor_uuid", "deployment", "deployment_uuid", "namespace", "namespace_uuid", "market", "market_uuid", "organization", "organization_uuid", "service_provider", "service_provider_uuid", "campus", "campus_uuid", "building", "building_uuid", "floor", "floor_uuid" ].each do |ss| %>
+                 <% if !vault_node["redborder"][ss].nil? and vault_node["redborder"][ss]!="" %>
+               constant(value="\",\"<%= ss %>\":\"")             constant(value="<%= vault_node["redborder"][ss] %>")
+                 <% end %>
+               <% end %>
+             constant(value="\"}")
+          }
+
+    <% if vault_node["rbname"] == "CEP" %>
+      if $fromhost-ip == '127.0.0.1' and $app-name == 'cep' and $rawmsg contains "ALERT" and $rawmsg contains "RULE" then
+    <% else %>
+      if $fromhost-ip == '<%= vault_node["redborder"]["ipaddress"] %>' then
+    <% end %>
+  {
+    #Action to send logs to Apache Kafka
+    action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="<%= template_name %>")
+    stop
+  }
+
+  <% end %>
 <% end %>
 
