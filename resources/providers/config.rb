@@ -18,8 +18,7 @@ action :add do
     cdomain = node["redborder"]["cdomain"]
 
     # Get vault and cep nodes
-    vault_nodes = get_vault_nodes
-    ips_nodes = get_ips_nodes
+
     ips = false
 
     if node.respond_to?"run_list" and (node.run_list.map{|x| x.name}.include?"ips-sensor" or node.run_list.map{|x| x.name}.include?"ipsv2-sensor" or node.run_list.map{|x| x.name}.include?"ipscp-sensor")

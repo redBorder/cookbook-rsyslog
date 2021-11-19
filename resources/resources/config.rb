@@ -14,3 +14,5 @@ attribute :work_dir, :kind_of => String, :default => "/var/spool/rsyslog"
 attribute :user, :kind_of => String, :default => "syslog"
 attribute :group, :kind_of => String, :default => "syslog"
 attribute :kafka_server, :kind_of => String, :default => "kafka.service"
+attribute :vault_nodes, :kind_of => Array, :default => []
+attribute :ips_nodes, :kind_of => Array, :default => []
