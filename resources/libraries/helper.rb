@@ -31,7 +31,9 @@ module Rsyslog
 
     end
 
-    def get_ips_nodes
+    def  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["i    psv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+ ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["i    psv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+
       # return a list of the vault nodes
       managers                = []
       managers_all            = []

@@ -16,6 +16,8 @@ action :add do
     group = new_resource.group
     kafka_server = new_resource.kafka_server
     cdomain = node["redborder"]["cdomain"]
+    vault_nodes = new_resources.vault_nodes
+    ips_nodes = new_resources.ips_nodes
 
     # Get vault and cep nodes
 
