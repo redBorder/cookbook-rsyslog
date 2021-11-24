@@ -44,12 +44,6 @@ case "$1" in
   ;;
 esac
 
-cd /etc/yum.repos.d/
-
-if [ ! -f rsyslog-rhel7.repo ]; then
-    wget http://rpms.adiscon.com/v8-stable/rsyslog-rhel7.repo
-fi
-
 %files
 %defattr(0755,root,root)
 %{rsys_lib}
