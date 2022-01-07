@@ -239,7 +239,7 @@ action :register do #Usually used to register in consul
       json_query = Chef::JSONCompat.to_json(query)
 
       execute 'Register service in consul' do
-        command "curl http://localhost:8500/v1/agent/service/register -d '#{json_query}' &>/dev/null"
+        command "curl -X PUT http://localhost:8500/v1/agent/service/register -d '#{json_query}' &>/dev/null"
         action :nothing
       end.run_action(:run)
 
@@ -255,7 +255,7 @@ action :deregister do #Usually used to deregister from consul
   begin
     if node["rsyslog"]["registered"]
       execute 'Deregister service in consul' do
-        command "curl http://localhost:8500/v1/agent/service/deregister/rsyslog-#{node["hostname"]} &>/dev/null"
+        command "curl -X PUT http://localhost:8500/v1/agent/service/deregister/rsyslog-#{node["hostname"]} &>/dev/null"
         action :nothing
       end.run_action(:run)
 

@@ -56,6 +56,8 @@ esac
 %doc
 
 %changelog
+* Fri Jan 07 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.0.4-1
+- change register to consul
 * Mon Nov 15 2021 Jordi Hernandez <jhernandez@redborder.com> - 1.0.1-1
 - Corrected source cookbook template
 
