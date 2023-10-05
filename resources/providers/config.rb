@@ -27,24 +27,24 @@ action :add do
         ips = true
     end
 
-    yum_package "rsyslog" do
+    dnf_package "rsyslog" do
       version "8.2001.0-1.el7"
       action :install
       flush_cache [:before]
     end
-    yum_package "rsyslog-kafka" do
+    dnf_package "rsyslog-kafka" do
       version '8.2001.0-1.el7'
       action :install
       flush_cache [:before]
     end
 
-    yum_package "rsyslog-mmnormalize" do
+    dnf_package "rsyslog-mmnormalize" do
       version '8.2001.0-1.el7'
       action :install
       flush_cache [:before]
     end
 
-    yum_package "rsyslog-mmjsonparse" do
+    dnf_package "rsyslog-mmjsonparse" do
       version '8.2001.0-1.el7'
       action :install
       flush_cache [:before]
