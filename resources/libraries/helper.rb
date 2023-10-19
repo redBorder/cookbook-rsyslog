@@ -10,7 +10,7 @@ module Rsyslog
         m = Chef::Node.load m_key
 
         begin
-          roles = m.roles
+          roles = m['roles']
         rescue NoMethodError
           begin
             roles = m.run_list
@@ -42,7 +42,7 @@ module Rsyslog
         m = Chef::Node.load m_key
 
         begin
-          roles = m.roles
+          roles = m['roles']
         rescue NoMethodError
           begin
             roles = m.run_list
