@@ -28,24 +28,24 @@ action :add do
     end
 
     dnf_package "rsyslog" do
-      version "8.2001.0-1.el7"
+      version "8.2308.0-1.el9"
       action :install
       flush_cache [:before]
     end
     dnf_package "rsyslog-kafka" do
-      version '8.2001.0-1.el7'
+      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
     dnf_package "rsyslog-mmnormalize" do
-      version '8.2001.0-1.el7'
+      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
     dnf_package "rsyslog-mmjsonparse" do
-      version '8.2001.0-1.el7'
+      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
