@@ -27,29 +27,29 @@ action :add do
         ips = true
     end
 
-    yum_package "rsyslog" do
-      version "8.2001.0-1.el7"
+    dnf_package "rsyslog" do
+      version "8.2308.0-1.el9"
       action :install
       flush_cache [:before]
     end
-    yum_package "rsyslog-kafka" do
-      version '8.2001.0-1.el7'
-      action :install
-      flush_cache [:before]
-    end
-
-    yum_package "rsyslog-mmnormalize" do
-      version '8.2001.0-1.el7'
+    dnf_package "rsyslog-kafka" do
+      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
-    yum_package "rsyslog-mmjsonparse" do
-      version '8.2001.0-1.el7'
+    # need to be before mmnormalize for the dependency on liblognorm5
+    dnf_package "rsyslog-mmjsonparse" do
+      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
+    dnf_package "rsyslog-mmnormalize" do
+      version '8.2308.0-1.el9'
+      action :install
+      flush_cache [:before]
+    end
 
     #group group do
     #  action  :create
@@ -243,7 +243,7 @@ action :register do #Usually used to register in consul
         action :nothing
       end.run_action(:run)
 
-      node.set["rsyslog"]["registered"] = true
+      node.normal["rsyslog"]["registered"] = true
     end
     Chef::Log.info("rsyslog service has been registered in consul")
   rescue => e
@@ -259,7 +259,7 @@ action :deregister do #Usually used to deregister from consul
         action :nothing
       end.run_action(:run)
 
-      node.set["rsyslog"]["registered"] = false
+      node.normal["rsyslog"]["registered"] = false
     end
     Chef::Log.info("rsyslog service has been deregistered from consul")
   rescue => e
