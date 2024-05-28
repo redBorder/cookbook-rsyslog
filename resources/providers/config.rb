@@ -193,7 +193,7 @@ action :add do
     end
 
     Chef::Log.info('rsyslog has been configured correctly.')
-  rescue Exception => e
+  rescue => e
     Chef::Log.error(e.message)
   end
 end
