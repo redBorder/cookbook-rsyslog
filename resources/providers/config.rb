@@ -22,8 +22,8 @@ action :add do
 
     ips = false
 
-    if node.respond_to?'run_list' and (node.run_list.map{|x| x.name}.include?'ips-sensor' or node.run_list.map{|x| x.name}.include?'ipsv2-sensor' or node.run_list.map{|x| x.name}.include?'ipscp-sensor')
-        ips = true
+    if node.respond_to?('run_list') && (node.run_list.map(&:name).include?('ips-sensor') || node.run_list.map(&:name).include?('ipsv2-sensor') || node.run_list.map(&:name).include?('ipscp-sensor'))
+      ips = true
     end
 
     dnf_package 'rsyslog' do
@@ -31,6 +31,7 @@ action :add do
       action :install
       flush_cache [:before]
     end
+
     dnf_package 'rsyslog-kafka' do
       version '8.2308.0-1.el9'
       action :install
@@ -50,52 +51,52 @@ action :add do
       flush_cache [:before]
     end
 
-    #group group do
-    #  action  :create
-    #end
+    # group group do
+    #   action  :create
+    # end
 
-    #user user do
-    #  comment 'rsyslog user'
-    #  shell   '/sbin/nologin'
-    #  group group
-    #  action  :create
-    #end
+    # user user do
+    #   comment 'rsyslog user'
+    #   shell   '/sbin/nologin'
+    #   group group
+    #   action  :create
+    # end
 
     directory config_dir do # '/etc/rsyslog.d'
-      owner   'root'
-      group   'root'
-      mode    '0755'
-      action  :create
+      owner 'root'
+      group 'root'
+      mode '0755'
+      action :create
     end
 
     if enable_tls
       directory certificates_dir do
-        owner   'root'
-        group   'root'
-        mode    '0755'
-        action  :create
+        owner 'root'
+        group 'root'
+        mode '0755'
+        action :create
       end
     end
 
     directory rules_dir do
-      owner   'root'
-      group   'root'
-      mode    '0755'
-      action  :create
+      owner 'root'
+      group 'root'
+      mode '0755'
+      action :create
     end
 
     directory work_dir do
       owner user
       group group
-      mode  '0755'
-      action  :create
+      mode '0755'
+      action :create
     end
 
     directory remote_logs_dir do
       owner user
       group group
-      mode  '0755'
-      action  :create
+      mode '0755'
+      action :create
     end
 
     directory '/var/spppl' do # CHECK IF NEEDED
@@ -110,7 +111,7 @@ action :add do
       mode '0700'
     end
 
-    if node[:redborder][:rsyslog][:is_server] # CHECK IF NEEDED
+    if node['redborder']['rsyslog']['is_server'] # CHECK IF NEEDED
       template '/etc/logrotate.d/log-sensors' do
         source 'rsyslog_log-sensors.erb'
         cookbook 'rsyslog'
@@ -122,11 +123,11 @@ action :add do
     end
 
     template '/etc/rsyslog.conf' do
-      source  'rsyslog.conf.erb'
+      source 'rsyslog.conf.erb'
       cookbook 'rsyslog'
       owner 'root'
-      group   'root'
-      mode  '0644'
+      group 'root'
+      mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
     end
@@ -142,45 +143,45 @@ action :add do
     end
 
     template "#{config_dir}/01-server.conf" do
-      source  'rsyslog_01-server.conf.erb'
+      source 'rsyslog_01-server.conf.erb'
       cookbook 'rsyslog'
       owner 'root'
-      group   'root'
-      mode  '0644'
+      group 'root'
+      mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
     end
 
     template "#{config_dir}/02-general.conf" do
-      source  'rsyslog_02-general.conf.erb'
+      source 'rsyslog_02-general.conf.erb'
       cookbook 'rsyslog'
       owner 'root'
-      group   'root'
-      mode  '0644'
+      group 'root'
+      mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
     end
 
     template "#{config_dir}/99-parse_rfc5424.conf" do
-      source  'rsyslog_99-parse_rfc5424.conf.erb'
+      source 'rsyslog_99-parse_rfc5424.conf.erb'
       cookbook 'rsyslog'
       owner 'root'
-      group   'root'
-      mode  '0644'
+      group 'root'
+      mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
-      variables(:cdomain => cdomain, :kafka_server => kafka_server, :vault_nodes => vault_nodes, :ips => ips)
+      variables(cdomain: cdomain, kafka_server: kafka_server, vault_nodes: vault_nodes, ips: ips)
     end
 
     template "#{config_dir}/20-redborder.conf" do
-      source  'rsyslog_20-redborder.conf.erb'
+      source 'rsyslog_20-redborder.conf.erb'
       cookbook 'rsyslog'
       owner 'root'
-      group   'root'
-      mode  '0644'
+      group 'root'
+      mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
-      variables(:ips_nodes => ips_nodes, :ips => ips)
+      variables(ips_nodes: ips_nodes, ips: ips)
     end
 
     service 'rsyslog' do
@@ -192,18 +193,15 @@ action :add do
     end
 
     Chef::Log.info('rsyslog has been configured correctly.')
-
   rescue Exception => e
     Chef::Log.error(e.message)
   end
 end
 
-action :remove do #Usually used to uninstall something
+action :remove do
   begin
-    config_dir = new_resource.config_dir
-
     service 'rsyslog' do
-      supports :stop => true, :disable => true
+      supports stop: true, disable: true
       action [:stop, :disable]
     end
 
@@ -228,7 +226,7 @@ action :remove do #Usually used to uninstall something
   end
 end
 
-action :register do #Usually used to register in consul
+action :register do
   begin
     unless node['rsyslog']['registered']
       query = {}
@@ -251,7 +249,7 @@ action :register do #Usually used to register in consul
   end
 end
 
-action :deregister do #Usually used to deregister from consul
+action :deregister do
   begin
     if node['rsyslog']['registered']
       execute 'Deregister service in consul' do
