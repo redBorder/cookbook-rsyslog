@@ -1,6 +1,5 @@
 module Rsyslog
   module Helper
-
     def get_vault_nodes
       # return a list of the vault nodes
       vault_nodes = []
@@ -19,23 +18,18 @@ module Rsyslog
           end
         end
 
-        unless roles.nil?
-          if !roles.empty? and !roles.include?("manager")
-            if m.respond_to?"run_list" and (m.run_list.map{|x| x.name}.include?"vault-sensor" or m.run_list.map{|x| x.name}.include?"cep-sensor")
-              vault_nodes << m
-            end
-          end
+        next unless roles && !roles.empty? && !roles.include?('manager')
+
+        if m.respond_to?('run_list') && (m.run_list.map(&:name).include?('vault-sensor') || m.run_list.map(&:name).include?('cep-sensor'))
+          vault_nodes << m
         end
       end
       vault_nodes
-
     end
 
     def get_ips_nodes
       # return a list of the vault nodes
-      managers                = []
-      managers_all            = []
-      ips_nodes             = []
+      ips_nodes = []
 
       managers_keys = Chef::Node.list.keys.sort
       managers_keys.each do |m_key|
@@ -51,17 +45,13 @@ module Rsyslog
           end
         end
 
-        unless roles.nil?
-          if !roles.empty? and !roles.include?("manager")
-            if m.respond_to?"run_list" and (m.run_list.map{|x| x.name}.include?"ips-sensor" or m.run_list.map{|x| x.name}.include?"ipsv2-sensor" or m.run_list.map{|x| x.name}.include?"ipscp-sensor")
-              ips_nodes << m
-            end
-          end
+        next unless roles && !roles.empty? && !roles.include?('manager')
+
+        if m.respond_to?('run_list') && (m.run_list.map(&:name).include?('ips-sensor') || m.run_list.map(&:name).include?('ipsv2-sensor') || m.run_list.map(&:name).include?('ipscp-sensor'))
+          ips_nodes << m
         end
       end
       ips_nodes
-
     end
-
   end
 end
