@@ -1,0 +1,31 @@
+template(name="norm_alarmsjob" type="list" option.jsonf="on") {
+    property(outname="raw-message" name="rawmsg" format="jsonf")
+    property(outname="message" name="msg" format="jsonf")
+    property(outname="pri" name="pri" format="jsonf")
+    property(outname="pri-text" name="pri-text" format="jsonf")
+    property(outname="syslogfacility" name="syslogfacility" format="jsonf" datatype="number")
+    property(outname="syslogfacility-text" name="syslogfacility-text" format="jsonf")
+    property(outname="syslogseverity" name="syslogseverity" format="jsonf" datatype="number")
+    property(outname="syslogseverity-text" name="syslogseverity-text" format="jsonf")
+    property(outname="protocol-version" name="protocol-version" format="jsonf")
+    property(outname="timestamp" name="timestamp" dateFormat="unixtimestamp" format="jsonf")
+    property(outname="hostname" name="hostname" format="jsonf")
+    property(outname="fromhost-ip" name="fromhost-ip" format="jsonf")
+    property(outname="app-name" name="app-name" format="jsonf" onEmpty="null")
+    property(outname="procid" name="procid" format="jsonf")
+    property(outname="msgid" name="msgid" format="jsonf")
+    property(outname="program-name" name="programname" format="jsonf")
+}
+
+if $app-name == 'alarmsjob' then {
+    action(type="omfile"
+        file="/var/log/remote/norm_alarmsjob.log"
+        template="norm_alarmsjob"
+    )
+    action(type="omkafka"
+        topic="rb_vault"
+        broker="kafka.service:9092"
+        template="norm_alarmsjob"
+    )
+    stop
+}
