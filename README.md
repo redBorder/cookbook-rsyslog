@@ -1,6 +1,17 @@
-# rsyslog cookbook
+# cookbook-rsyslog
+[![Build Status][build-shield]][build-url]
+[![Linters][linters-shield]][linters-url]
+[![License][license-shield]][license-url]
 
-cookbook to install and configure redborder syslog
+<!-- Badges -->
+[build-shield]: https://github.com/redBorder/cookbook-rsyslog/actions/workflows/rpm.yml/badge.svg?branch=master
+[build-url]: https://github.com/redBorder/cookbook-rsyslog/actions/workflows/rpm.yml?query=branch%3Amaster
+[linters-shield]: https://github.com/redBorder/cookbook-rsyslog/actions/workflows/lint.yml/badge.svg?event=push
+[linters-url]: https://github.com/redBorder/cookbook-rsyslog/actions/workflows/lint.yml
+[license-shield]: https://img.shields.io/badge/license-AGPLv3-blue.svg
+[license-url]: https://github.com/cookbook-rsyslog/blob/HEAD/LICENSE
+
+Chef cookbook to install and configure redborder syslog
 
 ### Platforms
 
@@ -8,7 +19,7 @@ cookbook to install and configure redborder syslog
 
 ### Chef
 
-- Chef 12.0 or later
+- Chef 15.7.0 or later
 
 ## Contributing
 
@@ -19,8 +30,6 @@ cookbook to install and configure redborder syslog
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
-## License and Authors
+## License
 
-Authors: Javier Rodriguez <javiercrg@redborder.com>, Vicente Mesa <vimesa@redborder.com>, Jordi Hernandez <jhernandez@redborder.com>
-
-LICENSE: AFFERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007
+GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
