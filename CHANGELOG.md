@@ -1,6 +1,21 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 1.1.0
+
+  - Miguel Negrón
+    - [ef332b8] Merge pull request #5 from redBorder/feature/18535_send_alarm_to_vault
+    - [a00e3eb] Update README.md
+    - [6f036b4] Update rpm.yml
+  - Miguel Negron
+    - [2b04f41] Remove omfile
+    - [82227c9] Add line
+    - [5885383] fix rsyslog
+    - [8c77b20] Update cookbook-rsyslog
+    - [e2e7a24] Merge branch 'development' into feature/18535_send_alarm_to_vault
+  - nilsver
+    - [e3550c2] send alarm to vault
+
 ## 1.0.6
 
   - Miguel Negron
