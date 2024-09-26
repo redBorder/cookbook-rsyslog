@@ -162,6 +162,17 @@ action :add do
       notifies :restart, 'service[rsyslog]', :delayed
     end
 
+    template "#{config_dir}/07-alarms.conf" do
+      source 'rsyslog_07-alarms.conf.erb'
+      cookbook 'rsyslog'
+      owner 'root'
+      group 'root'
+      mode '0644'
+      retries 2
+      notifies :restart, 'service[rsyslog]', :delayed
+      variables(kafka_server: kafka_server, ips: ips)
+    end
+
     template "#{config_dir}/99-parse_rfc5424.conf" do
       source 'rsyslog_99-parse_rfc5424.conf.erb'
       cookbook 'rsyslog'

@@ -1,0 +1,30 @@
+<% unless @ips %>
+template(name="norm_alarmsjob" type="list") {
+  constant(value="{")
+    constant(value="\"raw_message\":\"")              property(name="rawmsg" format="json")
+    constant(value="\",\"message\":\"")               property(name="msg" format="json")
+
+    constant(value="\",\"pri\":\"")                   property(name="pri" format="json")
+    constant(value="\",\"pri_text\":\"")              property(name="pri-text" format="json")
+    constant(value="\",\"syslogfacility\":\"")        property(name="syslogfacility" format="json" datatype="number")
+    constant(value="\",\"syslogfacility_text\":\"")   property(name="syslogfacility-text" format="json")
+    constant(value="\",\"syslogseverity\":\"")        property(name="syslogseverity" format="json" datatype="number")
+    constant(value="\",\"syslogseverity_text\":\"")   property(name="syslogseverity-text" format="json")
+
+    constant(value="\",\"protocol_version\":\"")      property(name="protocol-version" format="json")
+    constant(value="\",\"timestamp\":\"")             property(name="timestamp" dateFormat="unixtimestamp" format="json")
+    constant(value="\",\"hostname\":\"")              property(name="hostname" format="json")
+    constant(value="\",\"fromhost_ip\":\"")           property(name="fromhost-ip" format="json")
+    constant(value="\",\"app_name\":\"")              property(name="app-name" format="json" onEmpty="null")
+    constant(value="\",\"procid\":\"")                property(name="procid" format="json")
+    constant(value="\",\"msgid\":\"")                 property(name="msgid" format="json")
+
+  constant(value="\"}")
+}
+
+if $fromhost-ip == '127.0.0.1' and $app-name == 'alarmsjob' then
+{
+  action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="norm_alarmsjob")
+  stop
+}
+<% end %>
