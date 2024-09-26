@@ -1,31 +1,32 @@
-template(name="norm_alarmsjob" type="list" option.jsonf="on") {
-    property(outname="raw-message" name="rawmsg" format="jsonf")
-    property(outname="message" name="msg" format="jsonf")
-    property(outname="pri" name="pri" format="jsonf")
-    property(outname="pri-text" name="pri-text" format="jsonf")
-    property(outname="syslogfacility" name="syslogfacility" format="jsonf" datatype="number")
-    property(outname="syslogfacility-text" name="syslogfacility-text" format="jsonf")
-    property(outname="syslogseverity" name="syslogseverity" format="jsonf" datatype="number")
-    property(outname="syslogseverity-text" name="syslogseverity-text" format="jsonf")
-    property(outname="protocol-version" name="protocol-version" format="jsonf")
-    property(outname="timestamp" name="timestamp" dateFormat="unixtimestamp" format="jsonf")
-    property(outname="hostname" name="hostname" format="jsonf")
-    property(outname="fromhost-ip" name="fromhost-ip" format="jsonf")
-    property(outname="app-name" name="app-name" format="jsonf" onEmpty="null")
-    property(outname="procid" name="procid" format="jsonf")
-    property(outname="msgid" name="msgid" format="jsonf")
-    property(outname="program-name" name="programname" format="jsonf")
+<% unless @ips %>
+template(name="norm_alarmsjob" type="list") {
+  constant(value="{")
+    constant(value="\"raw_message\":\"")              property(name="rawmsg" format="json")
+    constant(value="\",\"message\":\"")               property(name="msg" format="json")
+
+    constant(value="\",\"pri\":\"")                   property(name="pri" format="json")
+    constant(value="\",\"pri_text\":\"")              property(name="pri-text" format="json")
+    constant(value="\",\"syslogfacility\":\"")        property(name="syslogfacility" format="json" datatype="number")
+    constant(value="\",\"syslogfacility_text\":\"")   property(name="syslogfacility-text" format="json")
+    constant(value="\",\"syslogseverity\":\"")        property(name="syslogseverity" format="json" datatype="number")
+    constant(value="\",\"syslogseverity_text\":\"")   property(name="syslogseverity-text" format="json")
+
+    constant(value="\",\"protocol_version\":\"")      property(name="protocol-version" format="json")
+    constant(value="\",\"timestamp\":\"")             property(name="timestamp" dateFormat="unixtimestamp" format="json")
+    constant(value="\",\"hostname\":\"")              property(name="hostname" format="json")
+    constant(value="\",\"fromhost_ip\":\"")           property(name="fromhost-ip" format="json")
+    constant(value="\",\"app_name\":\"")              property(name="app-name" format="json" onEmpty="null")
+    constant(value="\",\"procid\":\"")                property(name="procid" format="json")
+    constant(value="\",\"msgid\":\"")                 property(name="msgid" format="json")
+
+  constant(value="\"}")
 }
 
-if $app-name == 'alarmsjob' then {
-    action(type="omfile"
-        file="/var/log/remote/norm_alarmsjob.log"
-        template="norm_alarmsjob"
-    )
-    action(type="omkafka"
-        topic="rb_vault"
-        broker="kafka.service:9092"
-        template="norm_alarmsjob"
-    )
-    stop
+if $fromhost-ip == '127.0.0.1' and $app-name == 'alarmsjob' then
+{
+  action(type="omfile" file="/var/log/remote/debug_msg.log" template="debug_message")
+  action(type="omfile" file="/var/log/remote/norm_alarmsjob.log" template="norm_alarmsjob")
+  action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="norm_alarmsjob")
+  stop
 }
+<% end %>

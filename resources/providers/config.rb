@@ -170,6 +170,7 @@ action :add do
       mode '0644'
       retries 2
       notifies :restart, 'service[rsyslog]', :delayed
+      variables(kafka_server: kafka_server, ips: ips)
     end
 
     template "#{config_dir}/99-parse_rfc5424.conf" do
