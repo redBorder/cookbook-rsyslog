@@ -27,26 +27,22 @@ action :add do
     end
 
     dnf_package 'rsyslog' do
-      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
     dnf_package 'rsyslog-kafka' do
-      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
     # need to be before mmnormalize for the dependency on liblognorm5
     dnf_package 'rsyslog-mmjsonparse' do
-      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
 
     dnf_package 'rsyslog-mmnormalize' do
-      version '8.2308.0-1.el9'
       action :install
       flush_cache [:before]
     end
