@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 2.0.1
+
+  - Miguel Negrón
+    - [ab8cdbc] Add pre and postun to clean the cookbook
+
 ## 2.0.0
 
   - Miguel Negrón
@@ -11,7 +16,7 @@ cookbook-rsyslog CHANGELOG
     - [6f036b4] Update rpm.yml
   - David Vanhoucke
     - [0c105e4] remove rsyslog version
-  - Miguel Negron
+  - Miguel Negrón
     - [7250f0e] Bump version
     - [2b04f41] Remove omfile
     - [82227c9] Add line
@@ -27,7 +32,7 @@ cookbook-rsyslog CHANGELOG
     - [ef332b8] Merge pull request #5 from redBorder/feature/18535_send_alarm_to_vault
     - [a00e3eb] Update README.md
     - [6f036b4] Update rpm.yml
-  - Miguel Negron
+  - Miguel Negrón
     - [2b04f41] Remove omfile
     - [82227c9] Add line
     - [5885383] fix rsyslog
@@ -38,7 +43,7 @@ cookbook-rsyslog CHANGELOG
 
 ## 1.0.6
 
-  - Miguel Negron
+  - Miguel Negrón
     - [805eb97] Lint providers 3
     - [34948b5] Lint helper
     - [ab3cdd0] Lint providers 2

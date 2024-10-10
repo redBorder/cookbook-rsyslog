@@ -29,8 +29,10 @@ cp -f -r  resources/* %{buildroot}/var/chef/cookbooks/rsyslog/
 chmod -R 0755 %{buildroot}/var/chef/cookbooks/rsyslog
 install -D -m 0644 README.md %{buildroot}/var/chef/cookbooks/rsyslog/README.md
 
-
 %pre
+if [ -d /var/chef/cookbooks/rsyslog ]; then
+    rm -rf /var/chef/cookbooks/rsyslog
+fi
 
 %post
 case "$1" in
@@ -44,6 +46,12 @@ case "$1" in
   ;;
 esac
 
+%postun
+# Deletes directory when uninstall the package
+if [ "$1" = 0 ] && [ -d /var/chef/cookbooks/rsyslog ]; then
+  rm -rf /var/chef/cookbooks/rsyslog
+fi
+
 %files
 %defattr(0755,root,root)
 %{rsys_lib}
@@ -56,10 +64,14 @@ esac
 %doc
 
 %changelog
-* Fri Jan 07 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.0.4-1
+* Thu Oct 10 2024 Miguel Negrón <manegron@redborder.com>
+- Add pre and postun
+
+* Fri Jan 07 2022 David Vanhoucke <dvanhoucke@redborder.com>
 - change register to consul
-* Mon Nov 15 2021 Jordi Hernandez <jhernandez@redborder.com> - 1.0.1-1
+
+* Mon Nov 15 2021 Jordi Hernandez <jhernandez@redborder.com>
 - Corrected source cookbook template
 
-* Fri Nov 12 2021 Javier Rodríguez <javiercrg@redborder.com> - 1.0.0-1
+* Fri Nov 12 2021 Javier Rodríguez <javiercrg@redborder.com>
 - first spec version
