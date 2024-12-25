@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.0.0
+
+  - Miguel Negrón
+    - Alarms are parse now following rfc 5424
+
 ## 2.0.1
 
   - Miguel Negrón
