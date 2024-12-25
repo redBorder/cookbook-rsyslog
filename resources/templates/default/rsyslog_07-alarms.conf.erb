@@ -1,30 +1,39 @@
 <% unless @ips %>
-template(name="norm_alarmsjob" type="list") {
-  constant(value="{")
-    constant(value="\"raw_message\":\"")              property(name="rawmsg" format="json")
-    constant(value="\",\"message\":\"")               property(name="msg" format="json")
-
-    constant(value="\",\"pri\":\"")                   property(name="pri" format="json")
-    constant(value="\",\"pri_text\":\"")              property(name="pri-text" format="json")
-    constant(value="\",\"syslogfacility\":\"")        property(name="syslogfacility" format="json" datatype="number")
-    constant(value="\",\"syslogfacility_text\":\"")   property(name="syslogfacility-text" format="json")
-    constant(value="\",\"syslogseverity\":\"")        property(name="syslogseverity" format="json" datatype="number")
-    constant(value="\",\"syslogseverity_text\":\"")   property(name="syslogseverity-text" format="json")
-
-    constant(value="\",\"protocol_version\":\"")      property(name="protocol-version" format="json")
-    constant(value="\",\"timestamp\":\"")             property(name="timestamp" dateFormat="unixtimestamp" format="json")
-    constant(value="\",\"hostname\":\"")              property(name="hostname" format="json")
-    constant(value="\",\"fromhost_ip\":\"")           property(name="fromhost-ip" format="json")
-    constant(value="\",\"app_name\":\"")              property(name="app-name" format="json" onEmpty="null")
-    constant(value="\",\"procid\":\"")                property(name="procid" format="json")
-    constant(value="\",\"msgid\":\"")                 property(name="msgid" format="json")
-
-  constant(value="\"}")
+#Template for RFC5424 formatted logs
+template(name="alarm-triggered" type="list") {
+    constant(value="{")
+      constant(value="\"raw_message\":\"")               property(name="rawmsg" format="json")
+      constant(value="\",\"message\":\"")                property(name="msg" format="json")
+      constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
+      constant(value="\",\"pri_text\":\"")               property(name="pri-text" format="json")
+      constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
+      constant(value="\",\"syslogfacility_text\":\"")    property(name="syslogfacility-text" format="json")
+      constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
+      constant(value="\",\"syslogseverity_text\":\"")    property(name="syslogseverity-text" format="json")
+      constant(value="\",\"protocol_version\":\"")       property(name="protocol-version" format="json")
+      constant(value="\",\"timestamp\":\"")              property(name="timegenerated" dateFormat="unixtimestamp")
+      constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
+      constant(value="\",\"fromhost_ip\":\"")            property(name="fromhost-ip" format="json")
+      constant(value="\",\"app_name\":\"")               property(name="app-name" format="json")
+      constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
+      constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
+      constant(value="\",\"incident_uuid\":\"")          property(name="$!rfc5424-sd!alarm-event@39483!incident-uuid" format="json")
+      constant(value="\",\"incident_uri\":\"")           property(name="$!rfc5424-sd!alarm-event@39483!incident-uri" format="json")
+      constant(value="\",\"incident_domain\":\"")        property(name="$!rfc5424-sd!alarm-event@39483!incident-domain" format="json")
+      constant(value="\",\"sensor_name\":\"")            property(name="$!rfc5424-sd!alarm-event@39483!sensor-name" format="json")
+      constant(value="\",\"sensor_uuid\":\"")            property(name="$!rfc5424-sd!alarm-event@39483!sensor-uuid" format="json")
+      constant(value="\",\"severity_name\":\"")          property(name="$!rfc5424-sd!alarm-event@39483!severity-name" format="json")
+      constant(value="\",\"alarm_id\":\"")               property(name="$!rfc5424-sd!alarm-event@39483!alarm-id" format="json")
+      constant(value="\",\"alarm_user\":\"")             property(name="$!rfc5424-sd!alarm-event@39483!alarm-user" format="json")
+      constant(value="\",\"alarm_name\":\"")             property(name="$!rfc5424-sd!alarm-event@39483!alarm-name" format="json")
+      constant(value="\",\"alarm_product_type\":\"")     property(name="$!rfc5424-sd!alarm-event@39483!alarm-product-type" format="json")
+      constant(value="\",\"alarm_condition\":\"")        property(name="$!rfc5424-sd!alarm-event@39483!alarm-condition" format="json")
+    constant(value="\"}")
 }
 
-if $fromhost-ip == '127.0.0.1' and $app-name == 'alarmsjob' then
-{
-  action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="norm_alarmsjob")
-  stop
+
+if $app-name == 'alarmsjobs' and $msgid == 'alarm-triggered' then {
+    action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="alarm-triggered")
+    stop
 }
 <% end %>
