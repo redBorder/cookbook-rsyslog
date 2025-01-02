@@ -1,5 +1,5 @@
 ---
-name: lint
+name: master branch protection
 
 on:
   push:
