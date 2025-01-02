@@ -1,6 +1,12 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.0.1
+
+  - Miguel Negrón
+    - [7679296] Merge pull request #11 from redBorder/add_extra_check_form_alarm_origin
+    - [617f82c] Check for origin IP on alarm parsing
+
 ## 3.0.0
 
   - Miguel Negrón
