@@ -24,7 +24,7 @@ License and Author
 Authors:
 - Enrique Jimenez (<ejimenez@redborder.com>)
 - Carlos J. Mateos (<cjmateos@redborder.com>)
-Copyright 2016, redborder (info@redborder.com)
+Copyright 2016-2025, redborder (info@redborder.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
