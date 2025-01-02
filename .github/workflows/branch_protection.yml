@@ -2,7 +2,7 @@
 name: master branch protection
 
 on:
-  push:
+  pull_request:
     branches:
       - 'master'
 
