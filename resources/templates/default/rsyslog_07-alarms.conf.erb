@@ -32,7 +32,7 @@ template(name="alarm-triggered" type="list") {
 }
 
 
-if $app-name == 'alarmsjobs' and $msgid == 'alarm-triggered' then {
+if $fromhost-ip == '127.0.0.1' and $app-name == 'alarmsjobs' and $msgid == 'alarm-triggered' then {
     action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="alarm-triggered")
     stop
 }
