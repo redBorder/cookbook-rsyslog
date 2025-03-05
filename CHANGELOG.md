@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.1.0
+
+  - Miguel Negrón
+    - [0d6012d] Fix missing alarm-severity
+
 ## 3.0.1
 
   - Miguel Negrón
