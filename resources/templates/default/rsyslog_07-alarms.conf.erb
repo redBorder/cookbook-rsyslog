@@ -28,6 +28,11 @@ template(name="alarm-triggered" type="list") {
       constant(value="\",\"alarm_name\":\"")             property(name="$!rfc5424-sd!alarm-event@39483!alarm-name" format="json")
       constant(value="\",\"alarm_product_type\":\"")     property(name="$!rfc5424-sd!alarm-event@39483!alarm-product-type" format="json")
       constant(value="\",\"alarm_condition\":\"")        property(name="$!rfc5424-sd!alarm-event@39483!alarm-condition" format="json")
+      constant(value="\",\"traffic_wan_ip\":\"")         property(name="$!rfc5424-sd!alarm-event@39483!traffic-wan-ip" format="json")
+      constant(value="\",\"traffic_lan_ip\":\"")         property(name="$!rfc5424-sd!alarm-event@39483!traffic-lan-ip" format="json")
+      constant(value="\",\"intrusion_source\":\"")       property(name="$!rfc5424-sd!alarm-event@39483!intrusion_source" format="json")
+      constant(value="\",\"intrusion_target\":\"")        property(name="$!rfc5424-sd!alarm-event@39483!intrusion_target" format="json")
+      constant(value="\",\"wireless_station\":\"")        property(name="$!rfc5424-sd!alarm-event@39483!wireless_station" format="json")
     constant(value="\"}")
 }
 
