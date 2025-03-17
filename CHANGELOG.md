@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.2.0
+
+  - Pablo Torres
+    - [b5aab89] Feature #20410: Removed alarm_user - Multitenant Alarms
+
 ## 3.1.0
 
   - Miguel Negrón
