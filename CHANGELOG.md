@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.2.1
+
+  - Pablo Torres
+    - [245fbd4] Bugfix #20444: Add locations to alarms vault
+
 ## 3.2.0
 
   - Pablo Torres
