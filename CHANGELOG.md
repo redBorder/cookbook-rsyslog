@@ -4,7 +4,6 @@ cookbook-rsyslog CHANGELOG
 ## 3.2.2
 
   - Juan Soto
-    - [fbcb739] Fix typo
     - [d1732e9] Add new value for alarms
 
 ## 3.2.1
