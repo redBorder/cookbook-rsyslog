@@ -1,0 +1,49 @@
+<% unless @ips %>
+#Template for RFC5424 formatted logs
+template(name="inventory-devices-template" type="list") {
+    constant(value="{")
+      constant(value="\"raw_message\":\"")               property(name="rawmsg" format="json")
+      constant(value="\",\"message\":\"")                property(name="msg" format="json")
+      constant(value="\",\"pri\":\"")                    property(name="pri" format="json")
+      constant(value="\",\"pri_text\":\"")               property(name="pri-text" format="json")
+      constant(value="\",\"syslogfacility\":\"")         property(name="syslogfacility" format="json")
+      constant(value="\",\"syslogfacility_text\":\"")    property(name="syslogfacility-text" format="json")
+      constant(value="\",\"syslogseverity\":\"")         property(name="syslogseverity" format="json")
+      constant(value="\",\"syslogseverity_text\":\"")    property(name="syslogseverity-text" format="json")
+      constant(value="\",\"protocol_version\":\"")       property(name="protocol-version" format="json")
+      constant(value="\",\"timestamp\":\"")              property(name="timegenerated" dateFormat="unixtimestamp")
+      constant(value="\",\"hostname\":\"")               property(name="hostname" format="json")
+      constant(value="\",\"fromhost_ip\":\"")            property(name="fromhost-ip" format="json")
+      constant(value="\",\"app_name\":\"")               property(name="app-name" format="json")
+      constant(value="\",\"procid\":\"")                 property(name="procid" format="json")
+      constant(value="\",\"msgid\":\"")                  property(name="msgid" format="json")
+      constant(value="\",\"incident_uuid\":\"")          property(name="$!rfc5424-sd!new-inventory-device-event@39483!incident-uuid" format="json")
+      constant(value="\",\"incident_uri\":\"")           property(name="$!rfc5424-sd!new-inventory-device-event@39483!incident-uri" format="json")
+      constant(value="\",\"incident_domain\":\"")        property(name="$!rfc5424-sd!new-inventory-device-event@39483!incident-domain" format="json")
+      constant(value="\",\"sensor_name\":\"")            property(name="$!rfc5424-sd!new-inventory-device-event@39483!sensor-name" format="json")
+      constant(value="\",\"sensor_uuid\":\"")            property(name="$!rfc5424-sd!new-inventory-device-event@39483!sensor-uuid" format="json")
+      constant(value="\",\"service_provider\":\"")       property(name="$!rfc5424-sd!new-inventory-device-event@39483!service_provider" format="json")
+      constant(value="\",\"service_provider_uuid\":\"")  property(name="$!rfc5424-sd!new-inventory-device-event@39483!service_provider-uuid" format="json")
+      constant(value="\",\"deployment\":\"")             property(name="$!rfc5424-sd!new-inventory-device-event@39483!deployment" format="json")
+      constant(value="\",\"deployment_uuid\":\"")        property(name="$!rfc5424-sd!new-inventory-device-event@39483!deployment-uuid" format="json")
+      constant(value="\",\"namespace\":\"")              property(name="$!rfc5424-sd!new-inventory-device-event@39483!namespace" format="json")
+      constant(value="\",\"namespace_uuid\":\"")         property(name="$!rfc5424-sd!new-inventory-device-event@39483!namespace-uuid" format="json")
+      constant(value="\",\"organization\":\"")           property(name="$!rfc5424-sd!new-inventory-device-event@39483!organization" format="json")
+      constant(value="\",\"organization_uuid\":\"")      property(name="$!rfc5424-sd!new-inventory-device-event@39483!organization-uuid" format="json")
+      constant(value="\",\"market\":\"")                 property(name="$!rfc5424-sd!new-inventory-device-event@39483!market" format="json")
+      constant(value="\",\"market_uuid\":\"")            property(name="$!rfc5424-sd!new-inventory-device-event@39483!market-uuid" format="json")
+      constant(value="\",\"campus\":\"")                 property(name="$!rfc5424-sd!new-inventory-device-event@39483!campus" format="json")
+      constant(value="\",\"campus_uuid\":\"")            property(name="$!rfc5424-sd!new-inventory-device-event@39483!campus-uuid" format="json")
+      constant(value="\",\"building\":\"")               property(name="$!rfc5424-sd!new-inventory-device-event@39483!building" format="json")
+      constant(value="\",\"building_uuid\":\"")          property(name="$!rfc5424-sd!new-inventory-device-event@39483!building-uuid" format="json")
+      constant(value="\",\"floor\":\"")                  property(name="$!rfc5424-sd!new-inventory-device-event@39483!floor" format="json")
+      constant(value="\",\"floor_uuid\":\"")             property(name="$!rfc5424-sd!new-inventory-device-event@39483!floor-uuid" format="json")
+    constant(value="\"}")
+}
+
+
+if $fromhost-ip == '127.0.0.1' and $app-name == 'inventorydevicesjobs' and $msgid == 'new-inventory-device' then {
+    action(type="omkafka" topic="rb_vault" broker="<%= @kafka_server %>:9092" template="inventory-devices-template")
+    stop
+}
+<% end %>
