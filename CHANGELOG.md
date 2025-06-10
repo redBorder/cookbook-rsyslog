@@ -1,10 +1,16 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.3.0
+
+  - Miguel Negrón
+    - [e65a4d6] Add inventory devices parser
+  - Pablo Torres
+    - [3d173f9] Remove unnecesary comment from changelog
+
 ## 3.2.2
 
   - Juan Soto
-    - [fbcb739] Fix typo
     - [d1732e9] Add new value for alarms
 
 ## 3.2.1
