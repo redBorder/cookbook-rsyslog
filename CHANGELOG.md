@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.3.1
+
+  - Rafael Gomez
+    - [a98481b] Add asset IP and MAC address properties to inventory devices template
+
 ## 3.3.0
 
   - Miguel Negrón
