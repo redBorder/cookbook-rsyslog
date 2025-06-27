@@ -28,23 +28,19 @@ action :add do
 
     dnf_package 'rsyslog' do
       action :install
-      flush_cache [:before]
     end
 
     dnf_package 'rsyslog-kafka' do
       action :install
-      flush_cache [:before]
     end
 
     # need to be before mmnormalize for the dependency on liblognorm5
     dnf_package 'rsyslog-mmjsonparse' do
       action :install
-      flush_cache [:before]
     end
 
     dnf_package 'rsyslog-mmnormalize' do
       action :install
-      flush_cache [:before]
     end
 
     # group group do
