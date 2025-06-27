@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.3.2
+
+  - nilsver
+    - [a551f76] remove flush cache
+
 ## 3.3.1
 
   - Rafael Gomez
