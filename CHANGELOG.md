@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.4.1
+
+  - jnavarrorb
+    - [66ef4c5] Remove executable permissions on non-executable files
+
 ## 3.4.0
 
   - Juan Soto
