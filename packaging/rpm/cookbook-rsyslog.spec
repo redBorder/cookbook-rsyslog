@@ -55,7 +55,8 @@ fi
 %files
 %defattr(0755,root,root)
 %{rsys_lib}
-%defattr(0755,root,root)
+%defattr(0644,root,root)
+%attr(0755,root,root)
 /var/chef/cookbooks/rsyslog
 %defattr(0644,root,root)
 /var/chef/cookbooks/rsyslog/README.md
