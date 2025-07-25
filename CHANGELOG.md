@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.4.0
+
+  - Juan Soto
+    - [b60f93f] update alarm-triggered template properties for clarity and consistency
+
 ## 3.3.2
 
   - nilsver
