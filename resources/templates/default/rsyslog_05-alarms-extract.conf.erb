@@ -1,0 +1,174 @@
+if (
+  $app-name == "alarmsjobs"
+  and $msgid == "alarm-triggered"
+  and strlen($structured-data) > 0
+) then {
+
+  # ----------------------------------------------------------
+  # Incident
+  # ----------------------------------------------------------
+  set $!incident_uuid = re_extract(
+    $structured-data,
+    'incident-uuid="([^"]+)"',
+    0, 1, ""
+  );
+
+  set $!incident_uri = re_extract(
+    $structured-data,
+    'incident-uri="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!incident_domain = re_extract(
+    $structured-data,
+    'incident-domain="([^"]*)"',
+    0, 1, ""
+  );
+
+  # ----------------------------------------------------------
+  # Sensor
+  # ----------------------------------------------------------
+  set $!sensor_name = re_extract(
+    $structured-data,
+    'sensor-name="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!sensor_uuid = re_extract(
+    $structured-data,
+    'sensor-uuid="([^"]+)"',
+    0, 1, ""
+  );
+
+  # ----------------------------------------------------------
+  # Alarm core fields
+  # ----------------------------------------------------------
+  set $!alarm_id = re_extract(
+    $structured-data,
+    'alarm-id="([^"]+)"',
+    0, 1, ""
+  );
+
+  set $!alarm_name = re_extract(
+    $structured-data,
+    'alarm-name="([^"]+)"',
+    0, 1, ""
+  );
+
+  set $!alarm_product_type = re_extract(
+    $structured-data,
+    'alarm-product-type="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!alarm_condition = re_extract(
+    $structured-data,
+    'alarm-condition="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!alarm_severity = re_extract(
+    $structured-data,
+    'alarm-severity="([^"]+)"',
+    0, 1, ""
+  );
+
+  # ----------------------------------------------------------
+  # Ownership / hierarchy
+  # ----------------------------------------------------------
+  set $!service_provider = re_extract(
+    $structured-data,
+    'service_provider="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!service_provider_uuid = re_extract(
+    $structured-data,
+    'service_provider-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!deployment = re_extract(
+    $structured-data,
+    'deployment="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!deployment_uuid = re_extract(
+    $structured-data,
+    'deployment-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!namespace = re_extract(
+    $structured-data,
+    'namespace="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!namespace_uuid = re_extract(
+    $structured-data,
+    'namespace-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!organization = re_extract(
+    $structured-data,
+    'organization="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!organization_uuid = re_extract(
+    $structured-data,
+    'organization-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!market = re_extract(
+    $structured-data,
+    'market="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!market_uuid = re_extract(
+    $structured-data,
+    'market-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!campus = re_extract(
+    $structured-data,
+    'campus="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!campus_uuid = re_extract(
+    $structured-data,
+    'campus-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!building = re_extract(
+    $structured-data,
+    'building="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!building_uuid = re_extract(
+    $structured-data,
+    'building-uuid="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!floor = re_extract(
+    $structured-data,
+    'floor="([^"]*)"',
+    0, 1, ""
+  );
+
+  set $!floor_uuid = re_extract(
+    $structured-data,
+    'floor-uuid="([^"]*)"',
+    0, 1, ""
+  );
+}
