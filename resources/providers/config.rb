@@ -154,6 +154,16 @@ action :add do
       notifies :restart, 'service[rsyslog]', :delayed
     end
 
+    template "#{config_dir}/05-alarms-extract.conf" do
+      source 'rsyslog_05-alarms-extract.conf.erb'
+      cookbook 'rsyslog'
+      owner 'root'
+      group 'root'
+      mode '0644'
+      retries 2
+      notifies :restart, 'service[rsyslog]', :delayed
+    end
+
     template "#{config_dir}/07-alarms.conf" do
       source 'rsyslog_07-alarms.conf.erb'
       cookbook 'rsyslog'
