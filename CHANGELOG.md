@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.4.3
+
+  - manegron
+    - [992d711] Change log level
+
 ## 3.4.2
 
   - manegron

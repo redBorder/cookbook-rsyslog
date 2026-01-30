@@ -10,7 +10,7 @@ module Rsyslog
         begin
           m = Chef::Node.load m_key
         rescue
-          Chef::Log.error("[get_vault_nodes] Failed to load node: #{m_key}")
+          Chef::Log.warn("[get_vault_nodes] Failed to load node: #{m_key}")
         end
 
         # TODO: Refactor this
@@ -43,7 +43,7 @@ module Rsyslog
         begin
           m = Chef::Node.load m_key
         rescue
-          Chef::Log.error("[get_ips_nodes] Failed to load node: #{m_key}")
+          Chef::Log.warn("[get_ips_nodes] Failed to load node: #{m_key}")
         end
 
         # TODO: Refactor this
