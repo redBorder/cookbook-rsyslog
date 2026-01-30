@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.4.2
+
+  - manegron
+    - [ad16635] Add rescue
+
 ## 3.4.1
 
   - jnavarrorb
