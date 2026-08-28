@@ -1,6 +1,15 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.5.0
+
+  - Miguel Negrón
+    - [91619bc] Merge pull request #40 from redBorder/improvement/#26289_create_incidents_from_failed_backup_jobs
+  - manegron
+    - [91619bc] Merge pull request #40 from redBorder/improvement/#26289_create_incidents_from_failed_backup_jobs
+    - [301abb6] Add backup job asset and mac
+    - [2afde48] Add parse of backup job message
+
 ## 3.4.4
 
   - manegron
