@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.4.4
+
+  - manegron
+    - [469e1ec] Fix appname
+
 ## 3.4.3
 
   - manegron
