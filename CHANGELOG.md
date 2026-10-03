@@ -1,6 +1,11 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.5.1
+
+  - manegron
+    - [819dcad] Upload cookbook only if opscode-erchef is active
+
 ## 3.5.0
 
   - Miguel Negrón
