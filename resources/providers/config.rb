@@ -1,8 +1,6 @@
 # Cookbook:: rsyslog
 # Provider:: configure
 
-include Rsyslog::Helper
-
 action :add do
   begin
     enable_tls = new_resource.enable_tls
