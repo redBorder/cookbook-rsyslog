@@ -1,6 +1,14 @@
 cookbook-rsyslog CHANGELOG
 ===============
 
+## 3.6.0
+
+  - Miguel Negrón
+    - [9e155b6] Merge pull request #43 from redBorder/improvement/#26867_reduce_chef_server_queries
+  - manegron
+    - [9e155b6] Merge pull request #43 from redBorder/improvement/#26867_reduce_chef_server_queries
+    - [24bdfcb] Reduce chef server queries
+
 ## 3.5.1
 
   - manegron
